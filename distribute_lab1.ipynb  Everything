@@ -1,0 +1,916 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "kernelspec": {
+      "display_name": "Python 3",
+      "language": "python",
+      "name": "python3"
+    },
+    "language_info": {
+      "codemirror_mode": {
+        "name": "ipython",
+        "version": 3
+      },
+      "file_extension": ".py",
+      "mimetype": "text/x-python",
+      "name": "python",
+      "nbconvert_exporter": "python",
+      "pygments_lexer": "ipython3",
+      "version": "3.7.6"
+    },
+    "colab": {
+      "name": "distribute_lab1.ipynb",
+      "provenance": [],
+      "include_colab_link": true
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/setitfree/BasicPython/blob/main/distribute_lab1.ipynb%20%20Everything\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "-ipP2QX9Tryu"
+      },
+      "source": [
+        "# Lab 1: Dictionaries and Classes"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "v6ryy620Tryz"
+      },
+      "source": [
+        "## EXERCISE 1: Count words in Julius Caesar and make a text based histogram\n",
+        "\n",
+        "Building on the first lab, using lowercase words, lets make a histogram. Create a dictionary `worddict`, that has the counts of all the words in Caesar."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "G02cMe55Tryz",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "5d74b180-f1c5-4604-cbc8-b3a5b932b555"
+      },
+      "source": [
+        "# your code here\n",
+        "!wget https://raw.githubusercontent.com/setitfree/BasicPython/main/data/Julius%20Caesar.txt"
+      ],
+      "execution_count": 25,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "--2020-12-23 14:47:50--  https://raw.githubusercontent.com/setitfree/BasicPython/main/data/Julius%20Caesar.txt\n",
+            "Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 151.101.0.133, 151.101.64.133, 151.101.128.133, ...\n",
+            "Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|151.101.0.133|:443... connected.\n",
+            "HTTP request sent, awaiting response... 200 OK\n",
+            "Length: 120873 (118K) [text/plain]\n",
+            "Saving to: ‘Julius Caesar.txt.1’\n",
+            "\n",
+            "Julius Caesar.txt.1 100%[===================>] 118.04K  --.-KB/s    in 0.03s   \n",
+            "\n",
+            "2020-12-23 14:47:51 (4.54 MB/s) - ‘Julius Caesar.txt.1’ saved [120873/120873]\n",
+            "\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "cI_8q-V5Tryz"
+      },
+      "source": [
+        "Now here is where the iterative nature of dictionaries can be used to our benefit. We sort the worddict, using the function `worddict.get` to provide the values, which are the counts."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "COf9_tYBUTwO"
+      },
+      "source": [
+        "import string\n",
+        "worddict = dict()\n",
+        "fd = open(\"Julius Caesar.txt\")\n",
+        "\n",
+        "for line in fd:\n",
+        "  cleaned = line.strip()\n",
+        "  split = cleaned.split()\n",
+        "  for word in split:\n",
+        "    if not word in worddict:\n",
+        "      worddict[word] = 1\n",
+        "    else:\n",
+        "      worddict[word] += 1\n",
+        "\n"
+      ],
+      "execution_count": 26,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "HOOS6bEATry0"
+      },
+      "source": [
+        "topwords = sorted(worddict, key = worddict.get, reverse=True)"
+      ],
+      "execution_count": 27,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "W4c8BG78Try0",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "9f1c47ba-0f1c-4df1-b7bf-d339810e6ff6"
+      },
+      "source": [
+        "for word in topwords[:20]:\n",
+        "    print(word, worddict[word])"
+      ],
+      "execution_count": 28,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "the 531\n",
+            "I 499\n",
+            "and 426\n",
+            "of 356\n",
+            "to 347\n",
+            "you 265\n",
+            "a 231\n",
+            "is 214\n",
+            "in 206\n",
+            "And 201\n",
+            "not 199\n",
+            "BRUTUS. 193\n",
+            "that 184\n",
+            "my 169\n",
+            "his 150\n",
+            "CASSIUS. 138\n",
+            "with 137\n",
+            "he 135\n",
+            "be 129\n",
+            "have 125\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "Fge-doB6Try0"
+      },
+      "source": [
+        "You can even make a hacky histogram for this by creating a '#' for every 10 occurences"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "1XVfyWIbTry0",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "dbbbbfac-a9a7-4922-beba-28e47a32b51b"
+      },
+      "source": [
+        "for word in topwords[:20]:\n",
+        "    print(word+(20 - len(word))*' ', (worddict[word]//10)*'*')"
+      ],
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "the                  *****************************************************\n",
+            "I                    *************************************************\n",
+            "and                  ******************************************\n",
+            "of                   ***********************************\n",
+            "to                   **********************************\n",
+            "you                  **************************\n",
+            "a                    ***********************\n",
+            "is                   *********************\n",
+            "in                   ********************\n",
+            "And                  ********************\n",
+            "not                  *******************\n",
+            "BRUTUS.              *******************\n",
+            "that                 ******************\n",
+            "my                   ****************\n",
+            "his                  ***************\n",
+            "CASSIUS.             *************\n",
+            "with                 *************\n",
+            "he                   *************\n",
+            "be                   ************\n",
+            "have                 ************\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "Qe8VKX0zTry1"
+      },
+      "source": [
+        "## EXERCISE 2: Simulate a Bank Account"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "8MkmkpO-Try1"
+      },
+      "source": [
+        "class BankAccount:\n",
+        "    def __init__(self, balance):\n",
+        "        self.balance = balance\n",
+        "        \n",
+        "    def withdraw(self, amount):\n",
+        "        self.balance = self.balance - amount"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "iCOWKcpdTry1"
+      },
+      "source": [
+        "myaccount = BankAccount(100)\n",
+        "print(myaccount.balance)\n",
+        "myaccount.withdraw(20)\n",
+        "myaccount.balance"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "qlqJC8HITry1"
+      },
+      "source": [
+        "Python supports inheritance. Indeed, in python, all classes inherit from object, which means that they all get some attributes and methods from object.\n",
+        "\n",
+        "What is inheritance, more precisely? In inheritance an object is based on another object. When inheritance is implemented, the methods and attributes that were defined in the base class will also be present in the inherited class. This is generally done to abstract away similar code in multiple classes. The abstracted code will reside in the base class and the previous classes will now inherit from the base class.\n",
+        "\n",
+        "Let's look at an example of inheritance. In the following example, Rocket is the base class and MarsRover is the inherited class. Notice the string interpolation in the formatting as well."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "WOZ2JPbATry2"
+      },
+      "source": [
+        "class Rocket:\n",
+        "    def __init__(self, name, distance):\n",
+        "        self.name = name\n",
+        "        self.distance = distance\n",
+        "\n",
+        "    def launch(self):\n",
+        "        return \"%s has reached %s\" % (self.name, self.distance)\n",
+        "    \n",
+        "    def get_maker(self):\n",
+        "        return \"%s Launched\" % self.name\n",
+        "\n",
+        "\n",
+        "class MarsRover(Rocket): # inheriting from the base class\n",
+        "    def __init__(self, name, distance, maker):\n",
+        "        Rocket.__init__(self, name, distance)\n",
+        "        self.maker = maker\n",
+        "\n",
+        "    def get_maker(self):\n",
+        "        return \"%s Launched by %s\" % (self.name, self.maker)"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "9JpSy9LhTry2"
+      },
+      "source": [
+        "x = Rocket(\"Simple rocket\", \"till stratosphere\")\n",
+        "y = MarsRover(\"Mangalyaan\", \"till Mars\", \"ISRO\")\n",
+        "print(x.launch())\n",
+        "print(y.launch()) # dispatches to Ricket's launch\n",
+        "print(x.get_maker())\n",
+        "print(y.get_maker())"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "u_aO7d-9Try2"
+      },
+      "source": [
+        "`launch` is not defined by the derived class `MarsRover` so the `launch` for instance `y` is used from `Rocket`. On the other hand, `MarsRover` defines a new `get_maker` so that overrides the one from `Rocket`. Thus inheritance can be used to share functionality when needed and diversify when not."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "EWYxl88ITry2"
+      },
+      "source": [
+        "Define an error checking bank account `ECBankAccount` which inherits from `BankAccount` but will not allow overdraws. If there is an overdraw raise a `ValueError` with a message \"Withdrawal Not Allowed\": read up on this. Create two accounts one regular and one he derived class instance and wihdraw more than the balance from both."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "oSPjBxsvTry2"
+      },
+      "source": [
+        "# youe code here\n",
+        "class ECBankAccount:\n",
+        "    def __init__(self, balance):\n",
+        "        self.balance = balance\n",
+        "        \n",
+        "    def withdraw(self, amount):\n",
+        "        check = self.balance - amount\n",
+        "        if check >=0:\n",
+        "            self.balance -= amount\n",
+        "        else:\n",
+        "            raise ValueError(\"Withdrawal Not Allowed\")"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "y7Rgrl9aTry3"
+      },
+      "source": [
+        "x = BankAccount(100)\n",
+        "x.withdraw(120)\n",
+        "x.balance"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "jdESVKNlTry3"
+      },
+      "source": [
+        "y = ECBankAccount(100)\n",
+        "y.withdraw(120)"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "6a-fUiIhTry3"
+      },
+      "source": [
+        "y.balance"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "G3GgJuN4679Z"
+      },
+      "source": [
+        "# LAB0"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "K34fBl7nDtVY"
+      },
+      "source": [
+        "#"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "xc7qx5jfDtYc"
+      },
+      "source": [
+        "#"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "bLJMNUxk68AI",
+        "outputId": "8e5d08bf-1d51-4562-a4e3-b00a6f58614a",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        }
+      },
+      "source": [
+        "# Enumerate function Lab0\n",
+        "\n",
+        "import string\n",
+        "\n",
+        "for i in enumerate(string.ascii_uppercase):\n",
+        "  print(i)"
+      ],
+      "execution_count": 10,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "(0, 'A')\n",
+            "(1, 'B')\n",
+            "(2, 'C')\n",
+            "(3, 'D')\n",
+            "(4, 'E')\n",
+            "(5, 'F')\n",
+            "(6, 'G')\n",
+            "(7, 'H')\n",
+            "(8, 'I')\n",
+            "(9, 'J')\n",
+            "(10, 'K')\n",
+            "(11, 'L')\n",
+            "(12, 'M')\n",
+            "(13, 'N')\n",
+            "(14, 'O')\n",
+            "(15, 'P')\n",
+            "(16, 'Q')\n",
+            "(17, 'R')\n",
+            "(18, 'S')\n",
+            "(19, 'T')\n",
+            "(20, 'U')\n",
+            "(21, 'V')\n",
+            "(22, 'W')\n",
+            "(23, 'X')\n",
+            "(24, 'Y')\n",
+            "(25, 'Z')\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "QQwAhOJtAx0H"
+      },
+      "source": [
+        "Enumerate with zip function below (lab0)\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "ZoD5vG_-68DT",
+        "outputId": "4d5c4ef3-c644-488b-b14e-0dcf51d5de5f",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        }
+      },
+      "source": [
+        "import string\n",
+        "list1 = []\n",
+        "a = ord(\"a\")\n",
+        "b = ord(\"z\")\n",
+        "for i in range(a, b+1):\n",
+        "  list1.append(chr(i))\n",
+        "list2 = [i for i in range(0, 26)]\n",
+        "print(i)\n",
+        "for x, y in zip(list1, list2):\n",
+        "  print(x, y)"
+      ],
+      "execution_count": 1,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "122\n",
+            "a 0\n",
+            "b 1\n",
+            "c 2\n",
+            "d 3\n",
+            "e 4\n",
+            "f 5\n",
+            "g 6\n",
+            "h 7\n",
+            "i 8\n",
+            "j 9\n",
+            "k 10\n",
+            "l 11\n",
+            "m 12\n",
+            "n 13\n",
+            "o 14\n",
+            "p 15\n",
+            "q 16\n",
+            "r 17\n",
+            "s 18\n",
+            "t 19\n",
+            "u 20\n",
+            "v 21\n",
+            "w 22\n",
+            "x 23\n",
+            "y 24\n",
+            "z 25\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "5wAracJt68Fq",
+        "outputId": "544b0f47-ad5d-410c-aa9d-7e4b20985e42",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        }
+      },
+      "source": [
+        "#Count the uppercase,lowercase,digits and special chareacter Lab0\n",
+        "\n",
+        "my_string =\"HelloWorld,123,ThisIsUniv.Ai\"\n",
+        "\n",
+        "def count(what, inpstr):\n",
+        "  c = 0\n",
+        "  for s in inpstr:\n",
+        "    if s in what:\n",
+        "      c += 1\n",
+        "  return c\n",
+        "count(string.ascii_lowercase, my_string), count(string.ascii_uppercase, my_string), count(string.digits, my_string) \n"
+      ],
+      "execution_count": 14,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "(16, 6, 3)"
+            ]
+          },
+          "metadata": {
+            "tags": []
+          },
+          "execution_count": 14
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "J5NIvb4068H-",
+        "outputId": "4433b4c0-8640-409c-d36b-64827e1803ac",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        }
+      },
+      "source": [
+        "import string\n",
+        "my_string =\"HelloWorld,123,ThisIsUniv.Ai\"\n",
+        "counter = 0\n",
+        "for c in my_string:\n",
+        "  if c.isupper():\n",
+        "    counter += 1\n",
+        "print(counter)"
+      ],
+      "execution_count": 6,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "6\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "eLYWOGeU68K_",
+        "outputId": "dcb66b8c-6008-4a21-af9f-3b57123df980",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        }
+      },
+      "source": [
+        "# Read Julius Caesar. Get each line. Remove newline characters from each line. Split the line to get the words from the line. Lowercase them. Print the first 1000 words, lowercased.\n",
+        "\n",
+        "!wget https://raw.githubusercontent.com/setitfree/BasicPython/main/data/Julius%20Caesar.txt"
+      ],
+      "execution_count": 15,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "--2020-12-23 14:28:35--  https://raw.githubusercontent.com/setitfree/BasicPython/main/data/Julius%20Caesar.txt\n",
+            "Resolving raw.githubusercontent.com (raw.githubusercontent.com)... 151.101.0.133, 151.101.64.133, 151.101.128.133, ...\n",
+            "Connecting to raw.githubusercontent.com (raw.githubusercontent.com)|151.101.0.133|:443... connected.\n",
+            "HTTP request sent, awaiting response... 200 OK\n",
+            "Length: 120873 (118K) [text/plain]\n",
+            "Saving to: ‘Julius Caesar.txt’\n",
+            "\n",
+            "Julius Caesar.txt   100%[===================>] 118.04K  --.-KB/s    in 0.02s   \n",
+            "\n",
+            "2020-12-23 14:28:35 (4.63 MB/s) - ‘Julius Caesar.txt’ saved [120873/120873]\n",
+            "\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "7mowza5C68Ns",
+        "outputId": "7226e6e5-6132-4d2a-9018-20d761a1af9a",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        }
+      },
+      "source": [
+        "wordlist = []\n",
+        "fd = open(\"Julius Caesar.txt\")\n",
+        "for i in fd:\n",
+        "  clean = i.strip()\n",
+        "  split = clean.split()\n",
+        "  split = [splits.lower() for splits in split]\n",
+        "  wordlist += split\n",
+        "print(wordlist[:1000]) \n"
+      ],
+      "execution_count": 23,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "['the', 'tragedy', 'of', 'julius', 'caesar', 'by', 'william', 'shakespeare', 'contents', 'act', 'i', 'scene', 'i.', 'rome.', 'a', 'street.', 'scene', 'ii.', 'the', 'same.', 'a', 'public', 'place.', 'scene', 'iii.', 'the', 'same.', 'a', 'street.', 'act', 'ii', 'scene', 'i.', 'rome.', 'brutusâ€™', 'orchard.', 'scene', 'ii.', 'a', 'room', 'in', 'caesarâ€™s', 'palace.', 'scene', 'iii.', 'a', 'street', 'near', 'the', 'capitol.', 'scene', 'iv.', 'another', 'part', 'of', 'the', 'same', 'street,', 'before', 'the', 'house', 'of', 'brutus.', 'act', 'iii', 'scene', 'i.', 'rome.', 'before', 'the', 'capitol;', 'the', 'senate', 'sitting.', 'scene', 'ii.', 'the', 'same.', 'the', 'forum.', 'scene', 'iii.', 'the', 'same.', 'a', 'street.', 'act', 'iv', 'scene', 'i.', 'a', 'room', 'in', 'antonyâ€™s', 'house.', 'scene', 'ii.', 'before', 'brutusâ€™', 'tent,', 'in', 'the', 'camp', 'near', 'sardis.', 'scene', 'iii.', 'within', 'the', 'tent', 'of', 'brutus.', 'act', 'v', 'scene', 'i.', 'the', 'plains', 'of', 'philippi.', 'scene', 'ii.', 'the', 'same.', 'the', 'field', 'of', 'battle.', 'scene', 'iii.', 'another', 'part', 'of', 'the', 'field.', 'scene', 'iv.', 'another', 'part', 'of', 'the', 'field.', 'scene', 'v.', 'another', 'part', 'of', 'the', 'field.', 'dramatis', 'personã¦', 'julius', 'caesar', 'octavius', 'caesar,', 'triumvir', 'after', 'his', 'death.', 'marcus', 'antonius,', 'â€\\x9d', 'â€\\x9d', 'â€\\x9d', 'm.', 'aemilius', 'lepidus,', 'â€\\x9d', 'â€\\x9d', 'â€\\x9d', 'cicero,', 'publius,', 'popilius', 'lena,', 'senators.', 'marcus', 'brutus,', 'conspirator', 'against', 'caesar.', 'cassius,', 'â€\\x9d', 'â€\\x9d', 'â€\\x9d', 'casca,', 'â€\\x9d', 'â€\\x9d', 'â€\\x9d', 'trebonius,', 'â€\\x9d', 'â€\\x9d', 'â€\\x9d', 'ligarius,â€\\x9d', 'â€\\x9d', 'â€\\x9d', 'decius', 'brutus,', 'â€\\x9d', 'â€\\x9d', 'â€\\x9d', 'metellus', 'cimber,', 'â€\\x9d', 'â€\\x9d', 'â€\\x9d', 'cinna,', 'â€\\x9d', 'â€\\x9d', 'â€\\x9d', 'flavius,', 'tribune', 'marullus,', 'tribune', 'artemidorus,', 'a', 'sophist', 'of', 'cnidos.', 'a', 'soothsayer', 'cinna,', 'a', 'poet.', 'another', 'poet.', 'lucilius,', 'titinius,', 'messala,', 'young', 'cato,', 'and', 'volumnius,', 'friends', 'to', 'brutus', 'and', 'cassius.', 'varro,', 'clitus,', 'claudius,', 'strato,', 'lucius,', 'dardanius,', 'servants', 'to', 'brutus', 'pindarus,', 'servant', 'to', 'cassius', 'calphurnia,', 'wife', 'to', 'caesar', 'portia,', 'wife', 'to', 'brutus', 'the', 'ghost', 'of', 'caesar', 'senators,', 'citizens,', 'soldiers,', 'commoners,', 'messengers,', 'and', 'servants.', 'scene:', 'rome,', 'the', 'conspiratorsâ€™', 'camp', 'near', 'sardis,', 'and', 'the', 'plains', 'of', 'philippi.', 'act', 'i', 'scene', 'i.', 'rome.', 'a', 'street.', 'enter', 'flavius,', 'marullus', 'and', 'a', 'throng', 'of', 'citizens.', 'flavius.', 'hence!', 'home,', 'you', 'idle', 'creatures,', 'get', 'you', 'home.', 'is', 'this', 'a', 'holiday?', 'what,', 'know', 'you', 'not,', 'being', 'mechanical,', 'you', 'ought', 'not', 'walk', 'upon', 'a', 'labouring', 'day', 'without', 'the', 'sign', 'of', 'your', 'profession?', 'speak,', 'what', 'trade', 'art', 'thou?', 'carpenter.', 'why,', 'sir,', 'a', 'carpenter.', 'marullus.', 'where', 'is', 'thy', 'leather', 'apron', 'and', 'thy', 'rule?', 'what', 'dost', 'thou', 'with', 'thy', 'best', 'apparel', 'on?', 'you,', 'sir,', 'what', 'trade', 'are', 'you?', 'cobbler.', 'truly,', 'sir,', 'in', 'respect', 'of', 'a', 'fine', 'workman,', 'i', 'am', 'but,', 'as', 'you', 'would', 'say,', 'a', 'cobbler.', 'marullus.', 'but', 'what', 'trade', 'art', 'thou?', 'answer', 'me', 'directly.', 'cobbler.', 'a', 'trade,', 'sir,', 'that', 'i', 'hope', 'i', 'may', 'use', 'with', 'a', 'safe', 'conscience,', 'which', 'is', 'indeed,', 'sir,', 'a', 'mender', 'of', 'bad', 'soles.', 'marullus.', 'what', 'trade,', 'thou', 'knave?', 'thou', 'naughty', 'knave,', 'what', 'trade?', 'cobbler.', 'nay,', 'i', 'beseech', 'you,', 'sir,', 'be', 'not', 'out', 'with', 'me;', 'yet,', 'if', 'you', 'be', 'out,', 'sir,', 'i', 'can', 'mend', 'you.', 'marullus.', 'what', 'meanâ€™st', 'thou', 'by', 'that?', 'mend', 'me,', 'thou', 'saucy', 'fellow!', 'cobbler.', 'why,', 'sir,', 'cobble', 'you.', 'flavius.', 'thou', 'art', 'a', 'cobbler,', 'art', 'thou?', 'cobbler.', 'truly,', 'sir,', 'all', 'that', 'i', 'live', 'by', 'is', 'with', 'the', 'awl;', 'i', 'meddle', 'with', 'no', 'tradesmanâ€™s', 'matters,', 'nor', 'womenâ€™s', 'matters,', 'but', 'withal', 'i', 'am', 'indeed,', 'sir,', 'a', 'surgeon', 'to', 'old', 'shoes:', 'when', 'they', 'are', 'in', 'great', 'danger,', 'i', 'recover', 'them.', 'as', 'proper', 'men', 'as', 'ever', 'trod', 'upon', 'neatâ€™s', 'leather', 'have', 'gone', 'upon', 'my', 'handiwork.', 'flavius.', 'but', 'wherefore', 'art', 'not', 'in', 'thy', 'shop', 'today?', 'why', 'dost', 'thou', 'lead', 'these', 'men', 'about', 'the', 'streets?', 'cobbler.', 'truly,', 'sir,', 'to', 'wear', 'out', 'their', 'shoes,', 'to', 'get', 'myself', 'into', 'more', 'work.', 'but', 'indeed,', 'sir,', 'we', 'make', 'holiday', 'to', 'see', 'caesar,', 'and', 'to', 'rejoice', 'in', 'his', 'triumph.', 'marullus.', 'wherefore', 'rejoice?', 'what', 'conquest', 'brings', 'he', 'home?', 'what', 'tributaries', 'follow', 'him', 'to', 'rome,', 'to', 'grace', 'in', 'captive', 'bonds', 'his', 'chariot', 'wheels?', 'you', 'blocks,', 'you', 'stones,', 'you', 'worse', 'than', 'senseless', 'things!', 'o', 'you', 'hard', 'hearts,', 'you', 'cruel', 'men', 'of', 'rome,', 'knew', 'you', 'not', 'pompey?', 'many', 'a', 'time', 'and', 'oft', 'have', 'you', 'climbâ€™d', 'up', 'to', 'walls', 'and', 'battlements,', 'to', 'towers', 'and', 'windows,', 'yea,', 'to', 'chimney', 'tops,', 'your', 'infants', 'in', 'your', 'arms,', 'and', 'there', 'have', 'sat', 'the', 'livelong', 'day', 'with', 'patient', 'expectation,', 'to', 'see', 'great', 'pompey', 'pass', 'the', 'streets', 'of', 'rome.', 'and', 'when', 'you', 'saw', 'his', 'chariot', 'but', 'appear,', 'have', 'you', 'not', 'made', 'an', 'universal', 'shout,', 'that', 'tiber', 'trembled', 'underneath', 'her', 'banks', 'to', 'hear', 'the', 'replication', 'of', 'your', 'sounds', 'made', 'in', 'her', 'concave', 'shores?', 'and', 'do', 'you', 'now', 'put', 'on', 'your', 'best', 'attire?', 'and', 'do', 'you', 'now', 'cull', 'out', 'a', 'holiday?', 'and', 'do', 'you', 'now', 'strew', 'flowers', 'in', 'his', 'way,', 'that', 'comes', 'in', 'triumph', 'over', 'pompeyâ€™s', 'blood?', 'be', 'gone!', 'run', 'to', 'your', 'houses,', 'fall', 'upon', 'your', 'knees,', 'pray', 'to', 'the', 'gods', 'to', 'intermit', 'the', 'plague', 'that', 'needs', 'must', 'light', 'on', 'this', 'ingratitude.', 'flavius.', 'go,', 'go,', 'good', 'countrymen,', 'and,', 'for', 'this', 'fault', 'assemble', 'all', 'the', 'poor', 'men', 'of', 'your', 'sort,', 'draw', 'them', 'to', 'tiber', 'banks,', 'and', 'weep', 'your', 'tears', 'into', 'the', 'channel,', 'till', 'the', 'lowest', 'stream', 'do', 'kiss', 'the', 'most', 'exalted', 'shores', 'of', 'all.', '[_exeunt', 'citizens._]', 'see', 'whether', 'their', 'basest', 'metal', 'be', 'not', 'movâ€™d;', 'they', 'vanish', 'tongue-tied', 'in', 'their', 'guiltiness.', 'go', 'you', 'down', 'that', 'way', 'towards', 'the', 'capitol;', 'this', 'way', 'will', 'i.', 'disrobe', 'the', 'images,', 'if', 'you', 'do', 'find', 'them', 'deckâ€™d', 'with', 'ceremonies.', 'marullus.', 'may', 'we', 'do', 'so?', 'you', 'know', 'it', 'is', 'the', 'feast', 'of', 'lupercal.', 'flavius.', 'it', 'is', 'no', 'matter;', 'let', 'no', 'images', 'be', 'hung', 'with', 'caesarâ€™s', 'trophies.', 'iâ€™ll', 'about', 'and', 'drive', 'away', 'the', 'vulgar', 'from', 'the', 'streets;', 'so', 'do', 'you', 'too,', 'where', 'you', 'perceive', 'them', 'thick.', 'these', 'growing', 'feathers', 'pluckâ€™d', 'from', 'caesarâ€™s', 'wing', 'will', 'make', 'him', 'fly', 'an', 'ordinary', 'pitch,', 'who', 'else', 'would', 'soar', 'above', 'the', 'view', 'of', 'men,', 'and', 'keep', 'us', 'all', 'in', 'servile', 'fearfulness.', '[_exeunt._]', 'scene', 'ii.', 'the', 'same.', 'a', 'public', 'place.', 'enter,', 'in', 'procession,', 'with', 'music,', 'caesar;', 'antony,', 'for', 'the', 'course;', 'calphurnia,', 'portia,', 'decius,', 'cicero,', 'brutus,', 'cassius', 'and', 'casca;', 'a', 'great', 'crowd', 'following,', 'among', 'them', 'a', 'soothsayer.', 'caesar.', 'calphurnia.', 'casca.', 'peace,', 'ho!', 'caesar', 'speaks.', '[_music', 'ceases._]', 'caesar.', 'calphurnia.', 'calphurnia.', 'here,', 'my', 'lord.', 'caesar.', 'stand', 'you', 'directly', 'in', 'antoniusâ€™', 'way,', 'when', 'he', 'doth', 'run', 'his', 'course.', 'antonius.', 'antony.', 'caesar,', 'my', 'lord?', 'caesar.', 'forget', 'not', 'in', 'your', 'speed,', 'antonius,', 'to', 'touch', 'calphurnia;', 'for', 'our', 'elders', 'say,', 'the', 'barren,', 'touched', 'in', 'this', 'holy', 'chase,', 'shake', 'off', 'their', 'sterile', 'curse.', 'antony.', 'i', 'shall', 'remember.']\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "SCd2aHGWAV_5"
+      },
+      "source": [
+        "str = \"abc\"\n",
+        "str.split?\n"
+      ],
+      "execution_count": 24,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "m01UI6s_Jty0"
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "Wg3EpynUJs2c"
+      },
+      "source": [
+        "# LECTURE 2"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "wn7wK4WxJsx2"
+      },
+      "source": [
+        "#"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "6oseWAlpDdFj"
+      },
+      "source": [
+        "#"
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "CQdz3g8rJ0os",
+        "outputId": "75c4eec4-6980-44af-f301-c0674b42d01f",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        }
+      },
+      "source": [
+        "d = dict(\n",
+        "    name = \"ravi\",\n",
+        "    age = 23,\n",
+        "    gender = \"male\",\n",
+        "    job = \"student\"\n",
+        ")\n",
+        "print(d)\n",
+        "print(\"age\", d['age'])\n",
+        "d['interest'] = 'data science'\n",
+        "print(d)\n",
+        "print(d['age'])\n",
+        "for key in d:\n",
+        "  print(key, d['age'])"
+      ],
+      "execution_count": 49,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "{'name': 'ravi', 'age': 23, 'gender': 'male', 'job': 'student'}\n",
+            "age 23\n",
+            "{'name': 'ravi', 'age': 23, 'gender': 'male', 'job': 'student', 'interest': 'data science'}\n",
+            "23\n",
+            "name 23\n",
+            "age 23\n",
+            "gender 23\n",
+            "job 23\n",
+            "interest 23\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "Kf4LoP-uJ0mk",
+        "outputId": "bb9a8d8b-68d3-4eb7-a9cb-fd1f6233f158",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        }
+      },
+      "source": [
+        "d = dict(\n",
+        "    name = \"ravi\",\n",
+        "    age = 23,\n",
+        "    gender = \"male\",\n",
+        "    job = \"student\"\n",
+        ")\n",
+        "print(d['age'])"
+      ],
+      "execution_count": 47,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "23\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "DS7MRmGAJ0j6"
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "9NhBNuCjJ0hH"
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "MsdO23kbJ0eb"
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "I2-FHCmjJ0bA"
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "B1Gq-orDJ0YR"
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "8daoFjH3J0Um"
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "fkT4yfQ2J0NL"
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "b20iM0W9J0Da"
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "KIBkSV76Jz-6"
+      },
+      "source": [
+        ""
+      ],
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}
